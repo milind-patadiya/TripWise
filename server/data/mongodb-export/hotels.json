@@ -1,0 +1,106 @@
+[
+  {
+    "_id": "6a4d298b1cb397685b8b35f4",
+    "name": "Canaves Oia Epitome",
+    "destination": "Santorini",
+    "description": "Luxury hotel located in the picturesque town of Oia with stunning caldera views.",
+    "pricePerNight": 45000,
+    "rating": 5,
+    "distance": "Clifftop, Oia",
+    "category": "Luxury",
+    "amenities": [
+      "Infinity Pool",
+      "Spa",
+      "Fine Dining",
+      "Free WiFi"
+    ],
+    "image": "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600&fit=crop&q=80"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f5",
+    "name": "Ubud Hanging Gardens",
+    "destination": "Bali",
+    "description": "Award-winning resort nestled in the Balinese jungle with infinity pools overlooking a river gorge.",
+    "pricePerNight": 18000,
+    "rating": 4.8,
+    "distance": "Ubud Jungle",
+    "category": "Luxury",
+    "amenities": [
+      "Infinity Pool",
+      "Spa",
+      "Yoga",
+      "Free WiFi"
+    ],
+    "image": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&fit=crop&q=80"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f6",
+    "name": "The Ritz-Carlton Kyoto",
+    "destination": "Kyoto",
+    "description": "Elegant luxury hotel on the banks of the Kamogawa River, blending traditional Japanese aesthetics with modern comfort.",
+    "pricePerNight": 55000,
+    "rating": 4.9,
+    "distance": "Kamogawa River",
+    "category": "Luxury",
+    "amenities": [
+      "Spa",
+      "Fine Dining",
+      "Gym",
+      "Free WiFi",
+      "Breakfast Included"
+    ],
+    "image": "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&fit=crop&q=80"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f7",
+    "name": "Burj Al Arab Jumeirah",
+    "destination": "Dubai",
+    "description": "The iconic sail-shaped luxury hotel standing on its own artificial island.",
+    "pricePerNight": 85000,
+    "rating": 5,
+    "distance": "Jumeirah Beach",
+    "category": "Luxury",
+    "amenities": [
+      "Private Beach",
+      "Spa",
+      "Fine Dining",
+      "Butler Service",
+      "Free WiFi"
+    ],
+    "image": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=600&fit=crop&q=80"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f8",
+    "name": "Soneva Fushi",
+    "destination": "Male",
+    "description": "Barefoot luxury resort in the Maldives with overwater villas and pristine beaches.",
+    "pricePerNight": 65000,
+    "rating": 5,
+    "distance": "Baa Atoll",
+    "category": "Luxury",
+    "amenities": [
+      "Private Pool",
+      "Spa",
+      "Diving Center",
+      "Free WiFi"
+    ],
+    "image": "https://images.unsplash.com/photo-1540541338287-41700cea7514?w=600&fit=crop&q=80"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f9",
+    "name": "Hotel Santa Caterina",
+    "destination": "Amalfi Coast",
+    "description": "A stunning cliffside hotel overlooking the Mediterranean Sea along the Amalfi Coast.",
+    "pricePerNight": 42000,
+    "rating": 4.8,
+    "distance": "Amalfi Town",
+    "category": "Luxury",
+    "amenities": [
+      "Sea View",
+      "Pool",
+      "Restaurant",
+      "Free WiFi"
+    ],
+    "image": "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&fit=crop&q=80"
+  }
+]

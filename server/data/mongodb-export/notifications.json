@@ -1,0 +1,31 @@
+[
+  {
+    "_id": "6a4d298b1cb397685b8b360b",
+    "userId": "6a4d298b1cb397685b8b35e7",
+    "type": "Booking",
+    "title": "Booking Confirmed",
+    "message": "Your package booking for Romantic Santorini Getaway (Santorini, Greece) is confirmed. Ref: TWSNT2025A",
+    "actionUrl": "/dashboard/trips",
+    "read": false,
+    "createdAt": "2026-07-07T16:30:03.933Z"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b360c",
+    "userId": "6a4d298b1cb397685b8b35e7",
+    "type": "Booking",
+    "title": "Booking Confirmed",
+    "message": "Your hotel booking for Ubud Hanging Gardens (Bali, Indonesia) is confirmed. Ref: TWBALI2025B",
+    "actionUrl": "/dashboard/trips",
+    "read": false,
+    "createdAt": "2026-07-07T16:30:03.933Z"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b360d",
+    "userId": "6a4d298b1cb397685b8b35e7",
+    "type": "Alert",
+    "title": "Booking Cancelled",
+    "message": "Your booking for Classic Kyoto Experience (Ref: TWKYT2025D) has been cancelled and refunded.",
+    "read": true,
+    "createdAt": "2026-07-07T16:30:03.933Z"
+  }
+]

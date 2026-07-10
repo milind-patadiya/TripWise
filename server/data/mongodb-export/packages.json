@@ -1,0 +1,175 @@
+[
+  {
+    "_id": "6a4d298b1cb397685b8b35ee",
+    "title": "Romantic Santorini Getaway",
+    "destination": "6a4d298b1cb397685b8b35e8",
+    "durationDays": 5,
+    "durationNights": 4,
+    "price": 85000,
+    "discountPrice": 79000,
+    "description": "Experience the magic of Santorini with luxury cliffside accommodation, sunset catamaran cruise, and wine tasting tours.",
+    "image": "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5f1?w=800&fit=crop&q=80"
+    ],
+    "inclusions": [
+      "Flights",
+      "4-Star Hotel",
+      "Breakfast",
+      "Airport Transfers",
+      "Catamaran Cruise"
+    ],
+    "tags": [
+      "Honeymoon",
+      "Luxury",
+      "Romantic"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 124,
+    "featured": true
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35ef",
+    "title": "Ultimate Bali Adventure",
+    "destination": "6a4d298b1cb397685b8b35ea",
+    "durationDays": 7,
+    "durationNights": 6,
+    "price": 45000,
+    "discountPrice": 42000,
+    "description": "Explore the lush rice terraces, ancient temples, and beautiful beaches of Bali.",
+    "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=800&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&fit=crop&q=80"
+    ],
+    "inclusions": [
+      "Flights",
+      "Resort",
+      "Breakfast",
+      "Ubud Tour",
+      "Water Sports"
+    ],
+    "tags": [
+      "Adventure",
+      "Nature",
+      "Beaches"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 312,
+    "featured": true
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f0",
+    "title": "Classic Kyoto Experience",
+    "destination": "6a4d298b1cb397685b8b35e9",
+    "durationDays": 6,
+    "durationNights": 5,
+    "price": 95000,
+    "discountPrice": 88000,
+    "description": "Immerse yourself in Japanese culture with traditional ryokan stays, tea ceremonies, and bamboo forest walks.",
+    "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&fit=crop&q=80"
+    ],
+    "inclusions": [
+      "Flights",
+      "Ryokan",
+      "Breakfast & Dinner",
+      "Temple Tours"
+    ],
+    "tags": [
+      "Cultural",
+      "Historical",
+      "Family"
+    ],
+    "rating": 4.7,
+    "reviewsCount": 89,
+    "featured": false
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f1",
+    "title": "Dubai Luxury Escape",
+    "destination": "6a4d298b1cb397685b8b35ed",
+    "durationDays": 4,
+    "durationNights": 3,
+    "price": 55000,
+    "discountPrice": 49000,
+    "description": "Experience the glitz and glamour of Dubai with desert safari and luxury accommodation.",
+    "image": "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1582672060624-9ea622ce8ee9?w=800&fit=crop&q=80"
+    ],
+    "inclusions": [
+      "Flights",
+      "5-Star Hotel",
+      "Breakfast",
+      "Desert Safari",
+      "Burj Khalifa Entry"
+    ],
+    "tags": [
+      "Luxury",
+      "Shopping",
+      "City"
+    ],
+    "rating": 4.6,
+    "reviewsCount": 450,
+    "featured": true
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f2",
+    "title": "Maldives Paradise Retreat",
+    "destination": "6a4d298b1cb397685b8b35ec",
+    "durationDays": 5,
+    "durationNights": 4,
+    "price": 120000,
+    "discountPrice": 110000,
+    "description": "Escape to crystal-clear waters and pristine white sand beaches with overwater villa.",
+    "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?w=800&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1573843981267-be1999ff37cd?w=800&fit=crop&q=80"
+    ],
+    "inclusions": [
+      "Flights",
+      "Overwater Villa",
+      "All Meals",
+      "Snorkeling",
+      "Spa Treatment"
+    ],
+    "tags": [
+      "Luxury",
+      "Romantic",
+      "Beaches"
+    ],
+    "rating": 5,
+    "reviewsCount": 67,
+    "featured": true
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b35f3",
+    "title": "Amalfi Coast Explorer",
+    "destination": "6a4d298b1cb397685b8b35eb",
+    "durationDays": 6,
+    "durationNights": 5,
+    "price": 105000,
+    "discountPrice": 95000,
+    "description": "Drive along the stunning Amalfi coastline, explore charming villages, and indulge in Italian cuisine.",
+    "image": "https://images.unsplash.com/photo-1533587851505-d119e13fa0d7?w=800&fit=crop&q=80",
+    "images": [
+      "https://images.unsplash.com/photo-1516483638261-f41af5e81c00?w=800&fit=crop&q=80"
+    ],
+    "inclusions": [
+      "Flights",
+      "Boutique Hotel",
+      "Breakfast",
+      "Boat Tour",
+      "Cooking Class"
+    ],
+    "tags": [
+      "Luxury",
+      "Romantic",
+      "Cultural"
+    ],
+    "rating": 4.8,
+    "reviewsCount": 156,
+    "featured": false
+  }
+]

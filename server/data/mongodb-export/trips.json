@@ -1,0 +1,90 @@
+[
+  {
+    "_id": "6a4d298b1cb397685b8b3609",
+    "userId": "6a4d298b1cb397685b8b35e7",
+    "title": "Bali Adventure Plan",
+    "destination": "Bali",
+    "days": 7,
+    "budget": 45000,
+    "travelers": 2,
+    "travelStyle": "Adventure",
+    "interests": [
+      "Temples",
+      "Beaches",
+      "Nature"
+    ],
+    "status": "planned",
+    "itinerary": [
+      {
+        "day": 1,
+        "activities": [
+          {
+            "time": "9:00 AM",
+            "activity": "Arrive at Ngurah Rai Airport",
+            "notes": "Transfer to hotel"
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "activities": [
+          {
+            "time": "8:00 AM",
+            "activity": "Visit Tegallalang Rice Terraces",
+            "notes": "Bring camera"
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "activities": [
+          {
+            "time": "7:00 AM",
+            "activity": "Uluwatu Temple and Kecak Dance",
+            "notes": "Evening show"
+          }
+        ]
+      }
+    ],
+    "createdAt": "2026-07-07T16:30:03.933Z"
+  },
+  {
+    "_id": "6a4d298b1cb397685b8b360a",
+    "userId": "6a4d298b1cb397685b8b35e7",
+    "title": "Santorini Honeymoon",
+    "destination": "Santorini",
+    "days": 5,
+    "budget": 85000,
+    "travelers": 2,
+    "travelStyle": "Romantic",
+    "interests": [
+      "Sunsets",
+      "Wine",
+      "Fine Dining"
+    ],
+    "status": "planned",
+    "itinerary": [
+      {
+        "day": 1,
+        "activities": [
+          {
+            "time": "2:00 PM",
+            "activity": "Arrive in Santorini",
+            "notes": "Sunset welcome"
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "activities": [
+          {
+            "time": "10:00 AM",
+            "activity": "Catamaran cruise around the caldera",
+            "notes": "Full day"
+          }
+        ]
+      }
+    ],
+    "createdAt": "2026-07-07T16:30:03.933Z"
+  }
+]
