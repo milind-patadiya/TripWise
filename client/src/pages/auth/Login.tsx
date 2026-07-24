@@ -48,7 +48,7 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 shadow-xl rounded-2xl p-8 border border-slate-100 dark:border-slate-800">
+    <div className="bg-white dark:bg-slate-900 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 rounded-3xl p-10 border border-slate-100 dark:border-slate-800">
       <div className="flex flex-col items-center mb-8">
         <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/50 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4">
           <PlaneTakeoff size={24} />
@@ -57,7 +57,7 @@ export default function Login() {
         <p className="text-slate-500 text-sm mt-2">Welcome back! Please enter your details.</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>
           <Input {...register('email')} type="email" placeholder="Enter your email" error={errors.email?.message} />

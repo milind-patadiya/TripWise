@@ -84,7 +84,7 @@ export default function Packages() {
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-indigo-600 font-bold tracking-widest uppercase text-sm mb-3">Curated Experiences</motion.p>
-          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight gradient-text">
             Exclusive Holiday Packages
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-lg text-slate-500">
@@ -100,8 +100,15 @@ export default function Packages() {
               <button 
                 key={tag}
                 onClick={() => setFilter(tag)}
-                className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${filter === tag ? 'bg-indigo-600 text-white shadow-md' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+                className={`relative px-4 py-2.5 rounded-full text-sm font-bold transition-all z-10 ${filter === tag ? 'text-white' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'}`}
               >
+                {filter === tag && (
+                  <motion.div
+                    layoutId="filter-pill"
+                    className="absolute inset-0 bg-indigo-600 rounded-full shadow-md -z-10"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
                 {tag}
               </button>
             ))}
@@ -138,7 +145,7 @@ export default function Packages() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="group flex flex-col md:flex-row bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-2xl hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-500"
+                  className="group flex flex-col md:flex-row bg-white dark:bg-slate-900 rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden hover:shadow-2xl hover:border-indigo-300 dark:hover:border-indigo-700 hover:-translate-y-1 transition-all duration-500"
                 >
                   {/* Image Section */}
                   <div className="md:w-[400px] h-[250px] md:h-auto relative overflow-hidden shrink-0 cursor-pointer">
@@ -248,7 +255,7 @@ export default function Packages() {
 
       {/* AI Customization Banner (TravelTriangle Style) */}
       <div className="max-w-5xl mx-auto mt-20">
-        <div className="bg-indigo-600 rounded-3xl p-10 md:p-14 text-center relative overflow-hidden shadow-2xl border border-indigo-500">
+        <div className="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 rounded-3xl p-10 md:p-14 text-center relative overflow-hidden shadow-2xl border border-indigo-500/50">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3 pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-700 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/3 pointer-events-none" />
           

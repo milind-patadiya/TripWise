@@ -14,13 +14,14 @@ export default function Transport() {
   });
   const [activeTab, setActiveTab] = useState<'flights' | 'trains' | 'buses'>('flights');
 
-  const { data: transportData, refetch, isLoading } = useQuery({
+  const { data: transportData, refetch, isLoading, isError, error } = useQuery({
     queryKey: ['transport', origin, destination, date],
     queryFn: async () => {
       const res = await api.get(`/transport/search?origin=${origin}&destination=${destination}&date=${date}`);
       return res.data;
     },
-    enabled: false
+    enabled: false,
+    retry: false // Do not retry on 503 errors
   });
 
   const handleSearch = (e: React.FormEvent) => {
@@ -32,12 +33,16 @@ export default function Transport() {
     setTimeout(() => refetch(), 0);
   }, []);
 
+  // Extract custom error message from backend if available
+  const errorMessage = (error as any)?.response?.data?.message || 'No live transport data is available at the moment. Please try again later.';
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-20">
       
       {/* Search Header */}
-      <div className="bg-slate-900 text-white py-12 px-4 border-b-4 border-indigo-600">
-        <div className="container mx-auto max-w-6xl text-center">
+      <div className="bg-slate-900 text-white py-12 px-4 border-b-4 border-indigo-600 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-indigo-900/50 to-purple-900/50" />
+        <div className="container mx-auto max-w-6xl text-center relative z-10">
           <h1 className="text-3xl md:text-5xl font-extrabold mb-8">Book Flights, Trains & Buses</h1>
           
           <form onSubmit={handleSearch} className="bg-white dark:bg-slate-800 rounded-3xl p-4 flex flex-col md:flex-row gap-4 shadow-2xl relative z-10 max-w-5xl mx-auto">
@@ -83,7 +88,7 @@ export default function Transport() {
 
       {/* Tabs */}
       <div className="container mx-auto max-w-5xl mt-10 px-4">
-        <div className="flex gap-4 border-b border-slate-200 dark:border-slate-800 pb-px mb-8 overflow-x-auto">
+        <div className="flex gap-2 p-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-2xl w-max mb-8">
           {[
             { id: 'flights', icon: Plane, label: 'Flights' },
             { id: 'trains', icon: Train, label: 'Trains' },
@@ -92,13 +97,20 @@ export default function Transport() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-6 py-4 font-bold text-lg border-b-2 transition-colors shrink-0 ${
+              className={`relative flex items-center gap-2 px-6 py-2.5 font-bold text-sm md:text-base transition-colors shrink-0 rounded-xl z-10 ${
                 activeTab === tab.id 
-                  ? 'border-indigo-600 text-indigo-600' 
-                  : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-300'
+                  ? 'text-indigo-700 dark:text-indigo-300' 
+                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-300'
               }`}
             >
-              <tab.icon size={20} /> {tab.label}
+              {activeTab === tab.id && (
+                <motion.div
+                  layoutId="transport-tab"
+                  className="absolute inset-0 bg-white dark:bg-slate-700 rounded-xl shadow-sm -z-10"
+                  transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                />
+              )}
+              <tab.icon size={18} /> {tab.label}
             </button>
           ))}
         </div>
@@ -110,11 +122,33 @@ export default function Transport() {
           </div>
         )}
 
-        {!isLoading && transportData && (
+        {isError && activeTab === 'flights' && (
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-red-50 dark:bg-red-900/10 border border-red-200 dark:border-red-900/50 rounded-2xl p-10 text-center">
+            <Plane size={48} className="mx-auto text-red-400 mb-4 opacity-50" />
+            <h3 className="text-xl font-bold text-red-800 dark:text-red-400 mb-2">Transport Service Unavailable</h3>
+            <p className="text-red-600 dark:text-red-300 max-w-lg mx-auto">{errorMessage}</p>
+          </motion.div>
+        )}
+
+        {(isError || (transportData && transportData.trains.length === 0)) && activeTab === 'trains' && (
+          <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <Train size={48} className="mx-auto text-slate-300 dark:text-slate-700 mb-4" />
+            <h3 className="text-xl font-bold text-slate-600 dark:text-slate-400">Live train data is currently unavailable for this region.</h3>
+          </div>
+        )}
+
+        {(isError || (transportData && transportData.buses.length === 0)) && activeTab === 'buses' && (
+          <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+            <Bus size={48} className="mx-auto text-slate-300 dark:text-slate-700 mb-4" />
+            <h3 className="text-xl font-bold text-slate-600 dark:text-slate-400">Live bus data is currently unavailable for this region.</h3>
+          </div>
+        )}
+
+        {!isLoading && !isError && transportData && (
           <div className="space-y-4">
             
             {activeTab === 'flights' && transportData.flights.map((flight: any) => (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={flight.id} className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-md transition-shadow">
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }} key={flight.id} className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-xl transition-all duration-300">
                 <div className="flex items-center gap-4 w-full md:w-auto">
                   <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center p-2 shrink-0">
                     <img src={flight.logo} alt={flight.airline} className="max-w-full max-h-full object-contain" />
@@ -154,8 +188,9 @@ export default function Transport() {
               </motion.div>
             ))}
 
+
             {activeTab === 'trains' && transportData.trains.map((train: any) => (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={train.id} className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-md transition-shadow">
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }} key={train.id} className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-xl transition-all duration-300">
                 {/* Train mapping similar structure to flight */}
                 <div className="flex items-center gap-4 w-full md:w-1/3">
                   <div className="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 rounded-xl flex items-center justify-center shrink-0">
@@ -194,8 +229,9 @@ export default function Transport() {
               </motion.div>
             ))}
 
+
             {activeTab === 'buses' && transportData.buses.map((bus: any) => (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={bus.id} className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-md transition-shadow">
+              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -4 }} key={bus.id} className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-xl transition-all duration-300">
                 {/* Bus structure */}
                 <div className="flex items-center gap-4 w-full md:w-1/3">
                   <div className="w-12 h-12 bg-amber-50 dark:bg-amber-900/30 text-amber-600 rounded-xl flex items-center justify-center shrink-0">

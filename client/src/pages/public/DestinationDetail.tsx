@@ -12,6 +12,8 @@ import L from 'leaflet';
 import api from '@/api/axios';
 import { fetchCountryInfo } from '@/services/externalApi';
 import BookingModal from '@/components/booking/BookingModal';
+import AIBudgetEstimator from '@/components/destination/AIBudgetEstimator';
+import AITravelTips from '@/components/destination/AITravelTips';
 
 // Fix Leaflet default icon issue
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -99,6 +101,14 @@ export default function DestinationDetail() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
         
+        <div className="absolute top-6 left-4 md:left-6 z-20 flex gap-2 text-sm font-semibold text-white/70 backdrop-blur-md bg-black/20 px-4 py-1.5 rounded-full border border-white/10">
+          <Link to="/" className="hover:text-white transition-colors">Home</Link>
+          <span>/</span>
+          <Link to="/destinations" className="hover:text-white transition-colors">Destinations</Link>
+          <span>/</span>
+          <span className="text-white">{destination.name}</span>
+        </div>
+
         <div className="absolute bottom-0 left-0 right-0 container mx-auto px-4 md:px-6 pb-12 z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -150,18 +160,42 @@ export default function DestinationDetail() {
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {attractions.slice(0, 4).map((attr: any) => (
-                    <div key={attr._id} className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow">
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="font-bold text-slate-900 dark:text-white">{attr.name}</h3>
-                        <div className="flex items-center gap-1 text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">
-                          <Star size={10} className="text-amber-500 fill-amber-500" />
-                          <span className="font-semibold text-slate-700 dark:text-slate-300">{attr.rating}</span>
+                    <div key={attr._id} className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 hover:shadow-md transition-shadow overflow-hidden flex flex-col">
+                      {attr.image && (
+                        <div className="h-32 w-full overflow-hidden">
+                          <img src={attr.image} alt={attr.name} className="w-full h-full object-cover" />
                         </div>
-                      </div>
-                      <p className="text-sm text-slate-500 mb-3 line-clamp-2">{attr.description}</p>
-                      <div className="flex items-center justify-between text-xs text-slate-400">
-                        <span className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-medium">{attr.category}</span>
-                        <span>{attr.entryFee > 0 ? `₹${attr.entryFee}` : 'Free entry'}</span>
+                      )}
+                      <div className="p-4 flex flex-col flex-1">
+                        <div className="flex items-start justify-between mb-2">
+                          <h3 className="font-bold text-slate-900 dark:text-white">{attr.name}</h3>
+                          {attr.rating && (
+                            <div className="flex items-center gap-1 text-xs bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full shrink-0">
+                              <Star size={10} className="text-amber-500 fill-amber-500" />
+                              <span className="font-semibold text-slate-700 dark:text-slate-300">{attr.rating}</span>
+                            </div>
+                          )}
+                        </div>
+                        <p className="text-sm text-slate-500 mb-2 line-clamp-2">{attr.description}</p>
+                        
+                        <div className="mt-auto space-y-2 text-xs text-slate-500">
+                          {attr.address && (
+                            <div className="flex items-start gap-1.5 text-slate-400">
+                              <MapPin size={12} className="mt-0.5 shrink-0" />
+                              <span className="line-clamp-1">{attr.address}</span>
+                            </div>
+                          )}
+                          <div className="flex items-center justify-between">
+                            <span className="bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full font-medium">{attr.category}</span>
+                            {attr.distance && <span className="text-slate-400">{attr.distance}</span>}
+                          </div>
+                          {attr.openingHours && (
+                            <div className="flex items-center gap-1.5 text-slate-400 border-t border-slate-100 dark:border-slate-800 pt-2 mt-2">
+                              <Clock size={12} className="shrink-0" />
+                              <span>{attr.openingHours}</span>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -223,6 +257,12 @@ export default function DestinationDetail() {
               </div>
             </motion.section>
 
+            <motion.section
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+            >
+              <AITravelTips destination={destination.name} />
+            </motion.section>
+
           </div>
 
           {/* Right Column - Sticky Sidebar */}
@@ -232,7 +272,7 @@ export default function DestinationDetail() {
               {/* Weather Widget — Clean minimal design */}
               <motion.div 
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
-                className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm"
+                className="bg-gradient-to-br from-sky-50 to-white dark:from-sky-900/20 dark:to-slate-900 rounded-3xl p-6 border border-sky-100 dark:border-sky-900/50 shadow-sm"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
@@ -321,35 +361,26 @@ export default function DestinationDetail() {
                 )}
               </motion.div>
 
-              {/* Price Estimate */}
-              <motion.div 
-                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }}
-                className="bg-slate-900 rounded-3xl p-6 text-white shadow-sm"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-slate-400 font-medium">Estimated Budget</span>
-                  <Info size={16} className="text-slate-500" />
-                </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-extrabold text-white">₹{destination.estimatedCostPerDay?.toLocaleString('en-IN')}</span>
-                  <span className="text-slate-400 text-sm">/ day</span>
-                </div>
+              {/* Price Estimate / AI Budget */}
+              <AIBudgetEstimator destination={destination.name} />
+
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800">
                 <Link
                   to="/planner/setup"
                   onClick={() => {
                     localStorage.setItem('trip_planner_data', JSON.stringify({ destination: destination.name, days: 3, travelers: 2, budget: 'Moderate', interests: [] }));
                   }}
-                  className="block w-full mt-6 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-center font-semibold py-3 rounded-xl transition-colors text-sm"
+                  className="block w-full bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-center font-semibold py-3 rounded-xl transition-colors text-sm mb-3"
                 >
-                  ✨ Plan a custom trip with AI instead
+                  ✨ Plan a custom trip with AI
                 </Link>
                 <button
                   onClick={() => setShowBooking(true)}
-                  className="block w-full mt-3 bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold py-3 rounded-xl transition-colors"
+                  className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white text-center font-bold py-3 rounded-xl transition-colors"
                 >
-                  Book Now
+                  Book Destination
                 </button>
-              </motion.div>
+              </div>
 
               {showBooking && (
                 <BookingModal

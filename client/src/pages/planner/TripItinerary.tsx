@@ -20,7 +20,7 @@ export default function TripItinerary() {
 
   const generateMutation = useMutation({
     mutationFn: async (data: any) => {
-      const res = await api.post('/planner/generate', data);
+      const res = await api.post('/ai/plan-trip', data);
       return res.data.itinerary;
     },
     onSuccess: (data) => {
@@ -96,7 +96,7 @@ export default function TripItinerary() {
 
   if (!itinerary) return null;
 
-  const totalBudget = Object.values(itinerary.budgetBreakdown).reduce((a: any, b: any) => a + b, 0) as number;
+  const totalBudget = itinerary.totalEstimatedCost || Object.values(itinerary.budgetBreakdown).reduce((a: any, b: any) => a + b, 0) as number;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pt-24 pb-20 px-4 sm:px-6">
@@ -210,21 +210,39 @@ export default function TripItinerary() {
                             </div>
                             
                             <div className="space-y-4 pl-12 border-l-2 border-slate-100 dark:border-slate-800 ml-4">
-                              <div className="relative">
-                                <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full"><Coffee className="text-amber-500" size={14} /></div>
-                                <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">Morning</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{day.morning}</p>
-                              </div>
-                              <div className="relative">
-                                <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full"><Sun className="text-orange-500" size={14} /></div>
-                                <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">Afternoon</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{day.afternoon}</p>
-                              </div>
-                              <div className="relative">
-                                <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full"><Moon className="text-indigo-500" size={14} /></div>
-                                <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">Evening</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{day.evening}</p>
-                              </div>
+                              {day.schedule && day.schedule.map((item: any, i: number) => (
+                                <div key={i} className="relative">
+                                  <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full">
+                                    {item.time.toLowerCase() === 'morning' ? <Coffee className="text-amber-500" size={14} /> : 
+                                     item.time.toLowerCase() === 'afternoon' ? <Sun className="text-orange-500" size={14} /> : 
+                                     <Moon className="text-indigo-500" size={14} />}
+                                  </div>
+                                  <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">{item.time}</p>
+                                  <p className="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mb-1">{item.location}</p>
+                                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{item.activity}</p>
+                                </div>
+                              ))}
+                              
+                              {/* Fallback for old schema */}
+                              {day.morning && (
+                                <>
+                                  <div className="relative">
+                                    <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full"><Coffee className="text-amber-500" size={14} /></div>
+                                    <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">Morning</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{day.morning}</p>
+                                  </div>
+                                  <div className="relative">
+                                    <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full"><Sun className="text-orange-500" size={14} /></div>
+                                    <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">Afternoon</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{day.afternoon}</p>
+                                  </div>
+                                  <div className="relative">
+                                    <div className="absolute -left-[25px] top-1 bg-white dark:bg-slate-900 p-1 rounded-full"><Moon className="text-indigo-500" size={14} /></div>
+                                    <p className="text-sm font-bold text-slate-900 dark:text-white mb-1">Evening</p>
+                                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{day.evening}</p>
+                                  </div>
+                                </>
+                              )}
                             </div>
                           </div>
                         )}
@@ -238,8 +256,64 @@ export default function TripItinerary() {
           </div>
 
           {/* Interactive Map (Right Sticky) */}
-          <div className="lg:col-span-7 h-[600px] lg:h-[calc(100vh-140px)] sticky top-24">
-            <InteractiveMap locations={allLocations} />
+          <div className="lg:col-span-7 space-y-6">
+            <div className="h-[500px] lg:h-[calc(100vh-140px)] sticky top-24">
+              <InteractiveMap locations={allLocations} />
+            </div>
+
+            {itinerary.hotels && itinerary.hotels.length > 0 && (
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm mt-8">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Recommended Hotels</h3>
+                <div className="space-y-4">
+                  {itinerary.hotels.map((hotel: any, i: number) => (
+                    <div key={i} className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-4 last:border-0 last:pb-0">
+                      <div>
+                        <h4 className="font-bold text-slate-900 dark:text-white">{hotel.name}</h4>
+                        <p className="text-xs text-slate-500 line-clamp-1">{hotel.description}</p>
+                        <p className="text-xs font-bold text-amber-500 mt-1">★ {hotel.rating}</p>
+                      </div>
+                      <div className="text-right shrink-0 ml-4">
+                        <div className="text-sm font-bold text-slate-900 dark:text-white">₹{hotel.pricePerNight}</div>
+                        <div className="text-xs text-slate-400">/ night</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {itinerary.transportRecommendations && itinerary.transportRecommendations.length > 0 && (
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm mt-8">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">Transport Advice</h3>
+                <ul className="space-y-2">
+                  {itinerary.transportRecommendations.map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <Navigation size={18} className="text-indigo-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-slate-700 dark:text-slate-300 text-sm">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {itinerary.packingList && itinerary.packingList.length > 0 && (
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm mt-8">
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">AI Packing Checklist</h3>
+                  {itinerary.weatherSummary && (
+                    <span className="text-xs bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 px-3 py-1 rounded-full">{itinerary.weatherSummary}</span>
+                  )}
+                </div>
+                <ul className="space-y-2">
+                  {itinerary.packingList.map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <CheckCircle2 size={18} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-slate-700 dark:text-slate-300 text-sm">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
         </div>

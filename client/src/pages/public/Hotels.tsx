@@ -36,7 +36,7 @@ export default function Hotels() {
             Book hotels, resorts, and homestays at the best prices across India.
           </p>
           
-          <form onSubmit={handleSearch} className="max-w-3xl mx-auto bg-white rounded-full p-2 flex shadow-2xl relative z-10">
+          <form onSubmit={handleSearch} className="max-w-3xl mx-auto bg-white rounded-2xl p-2 flex shadow-2xl relative z-10">
             <div className="flex-1 flex items-center px-4 gap-3 border-r border-slate-200">
               <MapPin className="text-slate-400" size={24} />
               <input 
@@ -47,7 +47,7 @@ export default function Hotels() {
                 className="w-full text-slate-900 bg-transparent py-3 outline-none text-lg placeholder:text-slate-400"
               />
             </div>
-            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-full px-8 h-12 text-lg gap-2">
+            <Button type="submit" className="bg-indigo-600 hover:bg-indigo-700 rounded-xl px-8 h-12 text-lg gap-2">
               <Search size={18} /> Search
             </Button>
           </form>
@@ -91,6 +91,9 @@ export default function Hotels() {
 
         {/* Hotel Listings */}
         <div className="lg:col-span-3 space-y-6">
+          {!isLoading && hotels?.length > 0 && (
+            <p className="text-sm text-slate-500 font-medium">Showing {hotels.length} hotel{hotels.length !== 1 ? 's' : ''} in {searchQuery}</p>
+          )}
           {isLoading && (
             <div className="space-y-4">
               {[1, 2, 3].map(n => (
@@ -112,12 +115,13 @@ export default function Hotels() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               key={hotel._id}
-              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all overflow-hidden flex flex-col md:flex-row group"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col md:flex-row group"
             >
               <div className="md:w-1/3 h-56 md:h-auto overflow-hidden relative">
                 <img 
                   src={hotel.image || 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=600'} 
                   alt={hotel.name} 
+                  onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&q=80&w=600'; }}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
                 />
                 {hotel.category === 'Luxury' && (

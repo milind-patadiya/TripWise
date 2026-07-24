@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "admin": "npm run dev --prefix admin",
+    "dev:all": "npx concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\" \"npm run dev --prefix admin\"",
     "client": "npm run dev --prefix client",
     "server": "npm run dev --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1"

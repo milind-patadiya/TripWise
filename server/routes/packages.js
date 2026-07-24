@@ -15,7 +15,60 @@ router.get('/', async (req, res, next) => {
     const packages = await Package.find(query)
       .populate('destination', 'name state')
       .limit(Number(limit))
-      .sort({ rating: -1 });
+      .sort({ rating: -1 })
+      .lean(); // Use lean to easily modify the result
+
+    // Dynamically adjust price based on live Amadeus data (simulating a dynamic package)
+    if (process.env.AMADEUS_API_KEY && process.env.AMADEUS_API_KEY !== 'YOUR_AMADEUS_API_KEY_HERE') {
+      const { amadeus, fetchWithCache } = require('../services/amadeusService');
+      const axios = require('axios');
+      
+      const enrichedPackages = await Promise.all(packages.map(async (pkg) => {
+        try {
+          if (!pkg.destination || !pkg.destination.name) return pkg;
+          
+          const cacheKey = `package_price_${pkg.destination.name}`;
+          const dynamicAddOn = await fetchWithCache(cacheKey, async () => {
+             // 1. Geocode to get City code (mocking with standard cities for speed in this demo)
+             const destName = pkg.destination.name.toLowerCase();
+             const cityToIata = {
+                'new delhi': 'DEL', 'mumbai': 'BOM', 'goa': 'GOI', 'bangalore': 'BLR',
+                'santorini': 'JTR', 'kyoto': 'ITM', 'bali': 'DPS', 'dubai': 'DXB', 'male': 'MLE'
+             };
+             const destCode = cityToIata[destName] || 'DEL'; // Fallback to DEL
+             
+             // Get flights for next month
+             const d = new Date();
+             d.setDate(d.getDate() + 30);
+             const dateStr = d.toISOString().split('T')[0];
+             
+             const flightRes = await amadeus.shopping.flightOffersSearch.get({
+                originLocationCode: 'BOM', // Assuming user originates from BOM for the package
+                destinationLocationCode: destCode,
+                departureDate: dateStr,
+                adults: 1,
+                max: 1
+             });
+             
+             if (flightRes.data && flightRes.data.length > 0) {
+                 return parseInt(flightRes.data[0].price.total); // Flight cost
+             }
+             return 5000; // default addon
+          }, 3600); // 1 hour cache
+          
+          // Dynamically set price
+          pkg.discountPrice = pkg.price; // Base hotel + activities
+          pkg.price = pkg.price + dynamicAddOn; // Base + Live Flight
+          pkg.inclusions = [...new Set([...(pkg.inclusions || []), 'Live Flight Pricing'])];
+          
+          return pkg;
+        } catch (err) {
+          console.error(`Dynamic pricing failed for ${pkg.title}:`, err.message);
+          return pkg;
+        }
+      }));
+      return res.json(enrichedPackages);
+    }
 
     res.json(packages);
   } catch (error) {

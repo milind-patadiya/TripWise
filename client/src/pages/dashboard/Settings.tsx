@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { cn } from '@/utils/cn';
 import { toast } from 'react-hot-toast';
 
@@ -130,20 +131,18 @@ export default function Settings() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Full Name</label>
-            <input
+            <Input
               type="text"
               value={profileName}
               onChange={(e) => setProfileName(e.target.value)}
-              className="w-full h-10 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Email Address</label>
-            <input
+            <Input
               type="email"
               value={profileEmail}
               onChange={(e) => setProfileEmail(e.target.value)}
-              className="w-full h-10 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
             />
           </div>
           <div className="flex justify-end">
@@ -163,17 +162,17 @@ export default function Settings() {
           <div className="relative">
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Current Password</label>
             <div className="relative">
-              <input
+              <Input
                 type={showCurrentPwd ? 'text' : 'password'}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full h-10 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+                className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowCurrentPwd(!showCurrentPwd)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
               >
                 {showCurrentPwd ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -182,17 +181,17 @@ export default function Settings() {
           <div className="relative">
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">New Password</label>
             <div className="relative">
-              <input
+              <Input
                 type={showNewPwd ? 'text' : 'password'}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full h-10 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 pr-10 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+                className="pr-10"
               />
               <button
                 type="button"
                 onClick={() => setShowNewPwd(!showNewPwd)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors z-10"
               >
                 {showNewPwd ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
@@ -200,12 +199,11 @@ export default function Settings() {
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Confirm New Password</label>
-            <input
+            <Input
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full h-10 rounded-xl border border-slate-300 dark:border-slate-700 bg-transparent px-4 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
             />
           </div>
           <div className="flex justify-end">

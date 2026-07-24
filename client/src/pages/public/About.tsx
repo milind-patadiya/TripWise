@@ -175,6 +175,30 @@ export default function About() {
                 Together, we integrated advanced AI capabilities and real-world tools into a single platform. We are incredibly proud of TripWise—it represents our dedication, our teamwork, and our vision for the future of travel planning.
               </p>
             </div>
+            
+            {/* Timeline */}
+            <div className="mt-20">
+              <h3 className="text-2xl font-bold text-center text-slate-900 dark:text-white mb-12">Our Journey</h3>
+              <div className="relative border-l-2 border-indigo-200 dark:border-indigo-900/50 ml-4 md:ml-1/2 md:translate-x-[-1px] space-y-12">
+                {TIMELINE.map((item, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, x: i % 2 === 0 ? 20 : -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    className={`relative pl-8 md:pl-0 ${i % 2 === 0 ? 'md:pr-12 md:text-right md:mr-auto' : 'md:pl-12 md:ml-auto'} md:w-1/2`}
+                  >
+                    <div className="absolute top-1 left-[-25px] md:left-auto md:right-[-25px] w-4 h-4 rounded-full bg-indigo-600 ring-4 ring-indigo-100 dark:ring-indigo-900 shadow-lg z-10" 
+                         style={{ ...(i % 2 !== 0 && { right: 'auto', left: '-25px' }) }} />
+                    <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-md border border-slate-100 dark:border-slate-700 hover:shadow-xl transition-shadow">
+                      <span className="text-indigo-600 font-bold text-sm mb-1 block">{item.year}</span>
+                      <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{item.title}</h4>
+                      <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -196,19 +220,22 @@ export default function About() {
               transition={{ delay: i * 0.1 }}
               className="group text-center bg-white dark:bg-slate-900 p-8 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-lg hover:shadow-2xl transition-all duration-300"
             >
-              <div className="relative w-48 h-48 mx-auto mb-6 rounded-2xl overflow-hidden border-4 border-indigo-50 dark:border-slate-800 shadow-inner">
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  onError={(e) => {
-                    // Fallback to a nice avatar if the image is missing
-                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=4f46e5&color=fff&size=200`;
-                  }}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10" />
+              <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl h-full border border-slate-100 dark:border-slate-800">
+                <div className="relative w-48 h-48 mx-auto mb-6 rounded-2xl overflow-hidden border-4 border-indigo-50 dark:border-slate-800 shadow-inner">
+                  <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    onError={(e) => {
+                      // Fallback to a nice avatar if the image is missing
+                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name)}&background=4f46e5&color=fff&size=200`;
+                    }}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{member.name}</h3>
+                <p className="text-indigo-600 dark:text-indigo-400 font-medium px-4">{member.role}</p>
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{member.name}</h3>
-              <p className="text-indigo-600 dark:text-indigo-400 font-medium px-4">{member.role}</p>
             </motion.div>
           ))}
         </div>

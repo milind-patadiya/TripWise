@@ -55,7 +55,7 @@ export default function DashboardLayout() {
       {/* ── Top Navigation Bar (Desktop) ────────────────────────── */}
       <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-800/60">
         <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-[72px]">
             {/* Left: Logo + Nav */}
             <div className="flex items-center gap-8">
               {/* Logo */}
@@ -297,17 +297,17 @@ export default function DashboardLayout() {
       {/* ── Page Content ────────────────────────────────────────── */}
       <motion.main
         key={location.pathname}
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-6 pb-24 md:pb-6"
       >
         <Outlet />
       </motion.main>
 
       {/* ── Mobile Bottom Tab Bar ───────────────────────────────── */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-t border-slate-200/60 dark:border-slate-800/60 safe-area-pb">
-        <div className="flex items-center justify-around h-16 px-2">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl border-t border-slate-200/60 dark:border-slate-800/60 safe-area-pb shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center justify-around h-[68px] px-2">
           {MOBILE_NAV.map(({ icon: Icon, label, to }) => {
             const active = isActive(to);
             return (

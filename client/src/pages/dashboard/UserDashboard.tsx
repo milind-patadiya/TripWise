@@ -265,7 +265,12 @@ export default function UserDashboard() {
                       </div>
 
                       {/* Content */}
-                      <div className="flex-1 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 transition-colors">
+                      <div className={cn(
+                        "flex-1 bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 transition-colors border-l-4",
+                        b.status === 'Confirmed' ? 'border-l-indigo-500 hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10' :
+                        b.status === 'Completed' ? 'border-l-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10' :
+                        'border-l-red-500 hover:bg-red-50/50 dark:hover:bg-red-900/10'
+                      )}>
                         <div className="flex items-start justify-between gap-3">
                           <div className="min-w-0">
                             <h4 className="font-semibold text-sm text-slate-900 dark:text-white truncate">
@@ -398,8 +403,8 @@ export default function UserDashboard() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="lg:col-span-5 bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-100 dark:border-slate-800 relative overflow-hidden"
-          style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.02)' }}
+          className="lg:col-span-5 bg-gradient-to-br from-white/70 to-white/95 dark:from-slate-800/60 dark:to-slate-900/95 backdrop-blur-xl rounded-2xl p-6 border border-white/20 dark:border-slate-700/50 relative overflow-hidden"
+          style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.05)' }}
         >
           <p className="text-slate-400 text-xs font-medium uppercase tracking-wider mb-3 flex items-center gap-1.5">
             <CloudSun size={14} className="text-sky-500" /> Weather -- New Delhi

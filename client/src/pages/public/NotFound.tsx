@@ -1,18 +1,31 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, Compass, MapPin } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* Background pattern */}
+      <div 
+        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.02]"
+        style={{
+          backgroundImage: 'radial-gradient(circle at center, #000 1px, transparent 1px)',
+          backgroundSize: '32px 32px'
+        }}
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center max-w-lg"
+        className="text-center max-w-lg relative z-10"
       >
-        <div className="text-9xl font-extrabold text-indigo-100 dark:text-indigo-900/30 mb-8">
-          404
-        </div>
+        <motion.div 
+          animate={{ y: [-10, 10, -10], rotate: [0, 5, -5, 0] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          className="text-9xl font-extrabold text-indigo-100 dark:text-indigo-900/30 mb-8 flex justify-center"
+        >
+          <Compass size={120} className="text-indigo-500 opacity-80" strokeWidth={1} />
+        </motion.div>
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
           Oops! Looks like you're lost.
         </h1>
@@ -22,26 +35,20 @@ export default function NotFound() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/"
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-medium transition-colors"
-          >
-            <Home size={18} />
-            Back to Home
+          <Link to="/">
+            <Button size="lg" className="w-full sm:w-auto flex items-center justify-center gap-2 font-bold px-8">
+              <Home size={18} /> Back to Home
+            </Button>
           </Link>
-          <Link
-            to="/destinations"
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 text-slate-700 dark:text-slate-200 rounded-xl font-medium transition-colors"
-          >
-            <MapPin size={18} />
-            Explore Destinations
+          <Link to="/destinations">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto flex items-center justify-center gap-2 font-bold px-8 bg-white dark:bg-slate-900">
+              <MapPin size={18} /> Destinations
+            </Button>
           </Link>
-          <Link
-            to="/packages"
-            className="flex items-center justify-center gap-2 px-6 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 text-slate-700 dark:text-slate-200 rounded-xl font-medium transition-colors"
-          >
-            <Compass size={18} />
-            View Packages
+          <Link to="/packages">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto flex items-center justify-center gap-2 font-bold px-8 bg-white dark:bg-slate-900">
+              <Compass size={18} /> Packages
+            </Button>
           </Link>
         </div>
       </motion.div>

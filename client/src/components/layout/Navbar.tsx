@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <header className={cn('fixed top-0 left-0 right-0 z-50 transition-all duration-300', navBg)}>
-      <div className="container mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 md:px-6 h-[72px] flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 font-bold text-xl">
           <PlaneTakeoff className={cn('transition-colors', isHeroPage && !scrolled ? 'text-white' : 'text-indigo-600')} size={22} />
@@ -55,19 +55,31 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map(link => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={cn(
-                'text-sm font-medium transition-colors hover:text-indigo-500',
-                textColor
-              )}
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-1">
+          {NAV_LINKS.map(link => {
+            const isActive = location.pathname === link.to || (link.to !== '/' && location.pathname.startsWith(link.to));
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={cn(
+                  'relative text-sm font-medium transition-all duration-200 px-3.5 py-2 rounded-lg',
+                  isActive
+                    ? 'text-indigo-600 dark:text-indigo-400'
+                    : cn(textColor, 'hover:text-indigo-500')
+                )}
+              >
+                {link.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="navbar-indicator"
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-indigo-600 dark:bg-indigo-400"
+                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                  />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Actions */}
@@ -131,8 +143,9 @@ export default function Navbar() {
           )}
           {/* Mobile menu */}
           <button
-            className={cn('md:hidden p-2 rounded-lg', textColor)}
+            className={cn('md:hidden p-2 rounded-lg transition-colors', textColor)}
             onClick={() => setMobileOpen(p => !p)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -148,15 +161,26 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 pb-4"
           >
-            {NAV_LINKS.map(link => (
-              <Link
+            {NAV_LINKS.map((link, i) => (
+              <motion.div
                 key={link.to}
-                to={link.to}
-                className="block py-2.5 text-sm font-medium text-slate-700 dark:text-slate-200 hover:text-indigo-600"
-                onClick={() => setMobileOpen(false)}
+                initial={{ opacity: 0, x: -12 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
               >
-                {link.label}
-              </Link>
+                <Link
+                  to={link.to}
+                  className={cn(
+                    'block py-3 text-sm font-medium transition-colors',
+                    (location.pathname === link.to || (link.to !== '/' && location.pathname.startsWith(link.to)))
+                      ? 'text-indigo-600 dark:text-indigo-400'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-indigo-600'
+                  )}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              </motion.div>
             ))}
             {!user && (
               <div className="flex gap-2 mt-3">

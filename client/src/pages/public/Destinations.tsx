@@ -4,10 +4,13 @@ import api from '@/api/axios';
 import { motion } from 'framer-motion';
 import { MapPin, Search, Star, Filter } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
+import AICompareModal from '@/components/destination/AICompareModal';
+import { ArrowRightLeft, Sparkles } from 'lucide-react';
 
 export default function Destinations() {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState(searchParams.get('search') || '');
+  const [compareOpen, setCompareOpen] = useState(false);
 
   const { data: destinations, isLoading } = useQuery({
     queryKey: ['destinations', search],
@@ -22,13 +25,21 @@ export default function Destinations() {
       <div className="container mx-auto px-4 md:px-6">
         
         {/* Header Section */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">
-            Explore Destinations
-          </h1>
-          <p className="text-lg text-slate-500 max-w-2xl">
-            Discover the most beautiful places around the world. From sunny beaches to snow-capped mountains.
-          </p>
+        <div className="mb-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">
+              Explore Destinations
+            </h1>
+            <p className="text-lg text-slate-500 max-w-2xl">
+              Discover the most beautiful places around the world. From sunny beaches to snow-capped mountains.
+            </p>
+          </div>
+          
+          <button 
+            onClick={() => setCompareOpen(true)}
+            className="flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 dark:text-indigo-400 px-6 py-3 rounded-xl font-bold transition-colors shadow-sm"
+          >
+            <Sparkles size={18} /> AI Compare Destinations
+          </button>
         </div>
 
         {/* Search & Filter Bar */}
@@ -64,14 +75,17 @@ export default function Destinations() {
             ))}
           </div>
         ) : destinations?.length > 0 ? (
+          <>
+          <p className="text-sm text-slate-500 mb-6 font-medium">Showing {destinations.length} destination{destinations.length !== 1 ? 's' : ''}</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {destinations.map((dest: any, i: number) => (
               <Link to={`/destinations/${dest._id}`} key={dest._id}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="group rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col"
+                  whileHover={{ y: -6 }}
+                  transition={{ delay: i * 0.06 }}
+                  className="group rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col"
               >
                 <div className="relative h-[250px] overflow-hidden">
                   <img 
@@ -105,6 +119,7 @@ export default function Destinations() {
               </Link>
             ))}
           </div>
+          </>
         ) : (
           <div className="text-center py-20">
             <MapPin size={48} className="mx-auto text-slate-300 mb-4" />
@@ -114,6 +129,7 @@ export default function Destinations() {
         )}
 
       </div>
+      <AICompareModal isOpen={compareOpen} onClose={() => setCompareOpen(false)} />
     </div>
   );
 }

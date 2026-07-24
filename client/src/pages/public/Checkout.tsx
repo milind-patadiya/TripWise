@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ShieldCheck, CreditCard, ChevronRight, Lock, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { useQueryClient } from '@tanstack/react-query';
@@ -215,20 +216,20 @@ export default function Checkout() {
                     <div className="grid grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">First Name</label>
-                        <input required value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                        <Input required value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" />
                       </div>
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Last Name</label>
-                        <input required value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                        <Input required value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Email Address</label>
-                      <input required value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                      <Input required value={email} onChange={(e) => setEmail(e.target.value)} type="email" />
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
-                      <input required value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                      <Input required value={phone} onChange={(e) => setPhone(e.target.value)} type="tel" />
                     </div>
                     <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl gap-2 mt-4 text-lg">
                       Continue to Payment <ChevronRight size={18} />
@@ -251,19 +252,19 @@ export default function Checkout() {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Card Number</label>
                       <div className="relative">
-                        <CreditCard size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                        <input required value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} type="text" placeholder="0000 0000 0000 0000" maxLength={19} className="w-full pl-12 pr-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                        <CreditCard size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 z-10" />
+                        <Input required value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} type="text" placeholder="0000 0000 0000 0000" maxLength={19} className="pl-12" />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Expiry Date</label>
-                        <input required value={expiry} onChange={(e) => setExpiry(e.target.value)} type="text" placeholder="MM/YY" maxLength={5} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                        <Input required value={expiry} onChange={(e) => setExpiry(e.target.value)} type="text" placeholder="MM/YY" maxLength={5} />
                       </div>
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">CVV</label>
-                        <input required value={cvv} onChange={(e) => setCvv(e.target.value)} type="password" placeholder="123" maxLength={3} className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 outline-none focus:border-indigo-600 text-slate-900 dark:text-white" />
+                        <Input required value={cvv} onChange={(e) => setCvv(e.target.value)} type="password" placeholder="123" maxLength={3} />
                       </div>
                     </div>
                     <Button type="submit" disabled={isProcessing} className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl gap-2 mt-4 text-lg">
@@ -276,7 +277,7 @@ export default function Checkout() {
 
             {/* Right Column: Order Summary — real data */}
             <div className="space-y-6">
-              <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm sticky top-28">
+              <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-lg sticky top-28">
                 <div className="flex items-center gap-3 pb-4 mb-4 border-b border-slate-100 dark:border-slate-800">
                   {draft.itemImage && (
                     <img src={draft.itemImage} alt={draft.itemName} className="w-16 h-16 rounded-xl object-cover" />

@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import api from '@/api/axios';
 import DestinationAutocomplete, { PlaceResult } from '@/components/search/DestinationAutocomplete';
 import DateRangePicker from '@/components/search/DateRangePicker';
+import AISmartSearch from '@/components/search/AISmartSearch';
 
 // ─── Animated counter (no external dep) ─────────────────────
 function AnimatedNumber({ value, suffix = '' }: { value: number; suffix?: string }) {
@@ -100,6 +101,7 @@ export default function Landing() {
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
   const [guests, setGuests] = useState(2);
+  const [filterTab, setFilterTab] = useState<'standard' | 'ai'>('standard');
 
   const handleExplore = () => {
     if (selectedPlace?.destinationId) {
@@ -169,40 +171,65 @@ export default function Landing() {
             Personalized itineraries, smart budgets, and real-time data — all in one enterprise-grade travel platform.
           </motion.p>
 
-          {/* Search widget */}
+          {/* Search widget tabs */}
+          <div className="mt-12 w-full max-w-3xl mx-auto flex justify-center gap-4 mb-2">
+            <button
+              onClick={() => setFilterTab('standard')}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                filterTab === 'standard' ? 'bg-white text-slate-900' : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+            >
+              Standard Search
+            </button>
+            <button
+              onClick={() => setFilterTab('ai')}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                filterTab === 'ai' ? 'bg-indigo-600 text-white' : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+            >
+              <Sparkles size={14} /> AI Smart Search
+            </button>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-12 bg-white/10 backdrop-blur-xl border border-white/20 p-2 rounded-2xl flex flex-col md:flex-row gap-2 w-full max-w-3xl mx-auto shadow-2xl"
+            className="w-full max-w-3xl mx-auto"
           >
-            <DestinationAutocomplete
-              className="flex-1"
-              onSelect={setSelectedPlace}
-            />
-            <div className="flex-1 flex items-center bg-white dark:bg-slate-900 rounded-xl gap-2">
-              <DateRangePicker
-                checkIn={checkIn}
-                checkOut={checkOut}
-                onChange={(newCheckIn, newCheckOut) => { setCheckIn(newCheckIn); setCheckOut(newCheckOut); }}
-                className="w-full"
-              />
-            </div>
-            <div className="flex items-center bg-white dark:bg-slate-900 rounded-xl px-4 py-3 gap-3 md:w-32">
-              <Users className="text-slate-400 flex-shrink-0" size={18} />
-              <input
-                type="number"
-                value={guests}
-                min={1}
-                max={20}
-                onChange={(e) => setGuests(Number(e.target.value))}
-                className="bg-transparent w-full focus:outline-none text-sm text-slate-800 dark:text-slate-100"
-                aria-label="Number of guests"
-              />
-            </div>
-            <Button size="lg" onClick={handleExplore} className="rounded-xl px-8 w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 h-12">
-              Explore
-            </Button>
+            {filterTab === 'standard' ? (
+              <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-2 rounded-2xl flex flex-col md:flex-row gap-2 shadow-2xl">
+                <DestinationAutocomplete
+                  className="flex-1"
+                  onSelect={setSelectedPlace}
+                />
+                <div className="flex-1 flex items-center bg-white dark:bg-slate-900 rounded-xl gap-2">
+                  <DateRangePicker
+                    checkIn={checkIn}
+                    checkOut={checkOut}
+                    onChange={(newCheckIn, newCheckOut) => { setCheckIn(newCheckIn); setCheckOut(newCheckOut); }}
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex items-center bg-white dark:bg-slate-900 rounded-xl px-4 py-3 gap-3 md:w-32">
+                  <Users className="text-slate-400 flex-shrink-0" size={18} />
+                  <input
+                    type="number"
+                    value={guests}
+                    min={1}
+                    max={20}
+                    onChange={(e) => setGuests(Number(e.target.value))}
+                    className="bg-transparent w-full focus:outline-none text-sm text-slate-800 dark:text-slate-100"
+                    aria-label="Number of guests"
+                  />
+                </div>
+                <Button size="lg" onClick={handleExplore} className="rounded-xl px-8 w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 h-12">
+                  Explore
+                </Button>
+              </div>
+            ) : (
+              <AISmartSearch />
+            )}
           </motion.div>
 
           <motion.p
@@ -270,7 +297,8 @@ export default function Landing() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.08 }}
-                    className="group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300"
+                    whileHover={{ y: -8 }}
+                    className="group relative rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:shadow-xl transition-all duration-500"
                   >
                     <div className="aspect-[4/5] overflow-hidden">
                       <img
@@ -315,9 +343,9 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-8 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-lg transition-all duration-300"
+                className="p-8 rounded-2xl border border-slate-100 dark:border-slate-800 hover:border-indigo-200 dark:hover:border-indigo-800 hover:shadow-lg transition-all duration-300 group"
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${f.color}`}>
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${f.color} group-hover:scale-110 transition-transform duration-300`}>
                   <f.icon size={22} />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{f.title}</h3>
@@ -342,7 +370,7 @@ export default function Landing() {
       </section>
 
       {/* ── CTA ──────────────────────────────────── */}
-      <section className="py-24 bg-slate-900">
+      <section className="relative py-24 overflow-hidden" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4e 40%, #312e81 70%, #1e1b4e 100%)' }}>
         <div className="container mx-auto px-4 md:px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}

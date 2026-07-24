@@ -1,17 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { Heart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import api from '@/api/axios';
 
 export default function UserWishlist() {
   const { data: userProfile, isLoading } = useQuery({
     queryKey: ['user_profile'],
     queryFn: async () => {
-      const token = localStorage.getItem('auth_token');
-      const res = await axios.get(`http://localhost:5000/api/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await api.get(`/auth/profile`);
       return res.data;
     }
   });
@@ -34,10 +32,22 @@ export default function UserWishlist() {
           ))}
         </div>
       ) : wishlist.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {wishlist.map((pkg: any) => (
-            <Link key={pkg._id} to={`/packages`} className="block group">
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-lg transition-all flex flex-col h-full">
+            <motion.div
+              key={pkg._id}
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            >
+              <Link to={`/packages`} className="block group">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col h-full duration-300">
                 <div className="relative aspect-video rounded-xl overflow-hidden mb-4">
                   <img src={pkg.image} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   <button className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-full text-red-500 hover:scale-110 transition-transform">
@@ -48,10 +58,11 @@ export default function UserWishlist() {
                 <div className="mt-auto pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
                   ₹{(pkg.discountPrice || pkg.price).toLocaleString()}
                 </div>
-              </div>
-            </Link>
+                </div>
+              </Link>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
         <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-3xl border border-dashed border-slate-200 dark:border-slate-800">
           <Heart size={48} className="mx-auto text-slate-300 mb-4" />

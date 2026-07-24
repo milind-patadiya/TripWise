@@ -24,11 +24,22 @@
   /* Premium Fonts */
   --font-sans: 'Outfit', 'Inter', sans-serif;
   --font-heading: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+
+  /* Consistent border-radius tokens */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+  --radius-3xl: 1.75rem;
 }
 
 @layer base {
   html {
     font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     @apply bg-slate-50 text-slate-900 antialiased selection:bg-indigo-100 selection:text-indigo-900;
@@ -39,22 +50,36 @@
   
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+
+  /* Keyboard-only focus ring — never shows on click */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-indigo-500;
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Improve default link accessibility */
+  a:focus-visible {
+    @apply rounded-sm;
   }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   @apply bg-transparent;
 }
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
+  @apply bg-slate-300/60 rounded-full;
 }
 .dark ::-webkit-scrollbar-thumb {
-  @apply bg-slate-700;
+  @apply bg-slate-700/60;
 }
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-slate-400;
